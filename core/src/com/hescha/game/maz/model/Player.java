@@ -1,13 +1,14 @@
 package com.hescha.game.maz.model;
 
-import static com.hescha.game.maz.screen.AnimAssMaz.TEXTURE_SIZE;
-import static com.hescha.game.maz.screen.AnimAssMaz.playerTexture;
+
+import static com.hescha.game.maz.screen.GameScreen.TEXTURE_SIZE;
+import static com.hescha.game.maz.screen.GameScreen.playerTexture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Player {
     private int x, y;
-    // Загрузите изображение игрока, например:
+    private boolean isDragging = false;
     // private Texture playerTexture = new Texture("path_to_player_image.png");
 
     public Player(int x, int y) {
@@ -46,37 +47,61 @@ public class Player {
 
         return false;
     }
+    public boolean isDragging() {
+        return isDragging;
+    }
 
-    public void moveTo(float targetX, float targetY, Maze maze) {
-        // Определите направление движения игрока относительно касания экрана
-        // Попробуйте передвинуть игрока в этом направлении, пока он не столкнется со стеной лабиринта или не достигнет цели
+    public void drag(float targetX, float targetY, Maze maze) {
+        if (isDragging) {
+            Direction direction = null;
 
-        Direction direction;
+            float dx = targetX - x;
+            float dy = targetY - y;
 
-        float dx = targetX - x;
-        float dy = targetY - y;
-
-        if (Math.abs(dx) > Math.abs(dy)) {
-            direction = dx > 0 ? Direction.RIGHT : Direction.LEFT;
-        } else {
-            direction = dy > 0 ? Direction.UP : Direction.DOWN;
-        }
-
-        while (true) {
-            if (!move(direction, maze)) {
-                break; // Если игрок не может двигаться в этом направлении из-за стены, прервите цикл
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (dx > 0 && canMove(Direction.RIGHT, maze)) direction = Direction.RIGHT;
+                if (dx < 0 && canMove(Direction.LEFT, maze)) direction = Direction.LEFT;
+            } else {
+                if (dy > 0 && canMove(Direction.UP, maze)) direction = Direction.UP;
+                if (dy < 0 && canMove(Direction.DOWN, maze)) direction = Direction.DOWN;
             }
 
-            if ((direction == Direction.RIGHT && x >= targetX) ||
-                    (direction == Direction.LEFT && x <= targetX) ||
-                    (direction == Direction.UP && y >= targetY) ||
-                    (direction == Direction.DOWN && y <= targetY)) {
-                break; // Если игрок достиг цели, прервите цикл
+            if (direction != null) {
+                move(direction, maze);
             }
         }
     }
 
+    private boolean canMove(Direction direction, Maze maze) {
+        int dx = 0;
+        int dy = 0;
 
+        switch (direction) {
+            case UP:
+                dy = TEXTURE_SIZE;
+                break;
+            case DOWN:
+                dy = -TEXTURE_SIZE;
+                break;
+            case LEFT:
+                dx = -TEXTURE_SIZE;
+                break;
+            case RIGHT:
+                dx = TEXTURE_SIZE;
+                break;
+        }
+
+        return !maze.isWall(x + dx, y + dy);
+    }
+
+    public void startDragging() {
+        isDragging = true;
+    }
+
+    public void stopDragging() {
+        isDragging = false;
+    }
+    
     public void draw(SpriteBatch batch) {
          batch.draw(playerTexture, x, y, TEXTURE_SIZE, TEXTURE_SIZE);
     }
