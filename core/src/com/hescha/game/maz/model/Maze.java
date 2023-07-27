@@ -50,7 +50,7 @@ public class Maze {
     }
 
     public int getStartY() {
-        return( mazePath.length-1) * TEXTURE_SIZE;
+        return (mazePath.length - 1) * TEXTURE_SIZE;
     }
 
     public void draw(SpriteBatch batch) {
@@ -62,4 +62,16 @@ public class Maze {
             }
         }
     }
+
+    public boolean isExit(int x, int y) {
+        int i = y / TEXTURE_SIZE;
+        int j = x / TEXTURE_SIZE;
+
+        if (i < 0 || i >= mazePath.length || j < 0 || j >= mazePath[0].length) {
+            return false;
+        }
+
+        return i == 0 && j == mazePath.length - 2 && y<TEXTURE_SIZE/4;
+    }
+
 }

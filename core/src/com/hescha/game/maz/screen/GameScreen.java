@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hescha.game.maz.AnimAssMaz;
 import com.hescha.game.maz.generator.MazeGenerator;
 import com.hescha.game.maz.model.Maze;
 import com.hescha.game.maz.model.Player;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
     public static int TEXTURE_SIZE = 100;
-    public static int MAZE_SIZE = 20;
+    public static int MAZE_SIZE = 5;
 
     public static Texture playerTexture;
     public static Texture wallTexture;
@@ -80,6 +81,10 @@ public class GameScreen extends ScreenAdapter {
         maze.draw(batch);
         player.draw(batch);
         batch.end();
+
+        if(player.isFinished()){
+            AnimAssMaz.launcher.setScreen(new GameScreen());
+        }
     }
 
 
