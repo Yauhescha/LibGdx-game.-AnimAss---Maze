@@ -720,6 +720,13 @@ public class MazeGenerator {
 
 		while (current.getX() != size - 1 || current.getY() != size - 1) {
 
+			if (current.getNext() != null) {
+				current = current.getNext();
+			} else {
+				break;
+			}
+
+
 			// NORTH
 			if (current.getY() - 1 < 0) {
 				// Do Nothing

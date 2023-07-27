@@ -9,11 +9,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Player {
     private int x, y;
     private boolean isDragging = false;
-    // private Texture playerTexture = new Texture("path_to_player_image.png");
+    private Direction currentDirection = null;
+    private float moveTimer = 0;
+    private static final float MOVE_INTERVAL = 0.1f;  // Игрок будет двигаться каждые 0.2 секунды
 
     public Player(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void resetDirection() {
+        currentDirection = null;
     }
 
     public enum Direction {
@@ -47,30 +53,31 @@ public class Player {
 
         return false;
     }
+
     public boolean isDragging() {
         return isDragging;
     }
 
-    public void drag(float targetX, float targetY, Maze maze) {
-        if (isDragging) {
-            Direction direction = null;
+    public void drag(float deltaX, float deltaY, Maze maze) {
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > 0 && canMove(Direction.RIGHT, maze)) currentDirection = Direction.RIGHT;
+            else if (deltaX < 0 && canMove(Direction.LEFT, maze)) currentDirection = Direction.LEFT;
+        } else {
+            if (deltaY > 0 && canMove(Direction.UP, maze)) currentDirection = Direction.UP;
+            else if (deltaY < 0 && canMove(Direction.DOWN, maze)) currentDirection = Direction.DOWN;
+        }
+    }
 
-            float dx = targetX - x;
-            float dy = targetY - y;
-
-            if (Math.abs(dx) > Math.abs(dy)) {
-                if (dx > 0 && canMove(Direction.RIGHT, maze)) direction = Direction.RIGHT;
-                if (dx < 0 && canMove(Direction.LEFT, maze)) direction = Direction.LEFT;
-            } else {
-                if (dy > 0 && canMove(Direction.UP, maze)) direction = Direction.UP;
-                if (dy < 0 && canMove(Direction.DOWN, maze)) direction = Direction.DOWN;
-            }
-
-            if (direction != null) {
-                move(direction, maze);
+    public void update(float deltaTime, Maze maze) {
+        if (currentDirection != null) {
+            moveTimer += deltaTime;
+            if (moveTimer >= MOVE_INTERVAL) {
+                move(currentDirection, maze);
+                moveTimer = 0;
             }
         }
     }
+
 
     private boolean canMove(Direction direction, Maze maze) {
         int dx = 0;
@@ -101,9 +108,9 @@ public class Player {
     public void stopDragging() {
         isDragging = false;
     }
-    
+
     public void draw(SpriteBatch batch) {
-         batch.draw(playerTexture, x, y, TEXTURE_SIZE, TEXTURE_SIZE);
+        batch.draw(playerTexture, x, y, TEXTURE_SIZE, TEXTURE_SIZE);
     }
 }
 
