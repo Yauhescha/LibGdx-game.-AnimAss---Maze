@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
     public static int TEXTURE_SIZE = 100;
-    public static int MAZE_SIZE = 5;
+    public static int MAZE_SIZE = 20;
 
     public static Texture playerTexture;
     public static Texture wallTexture;

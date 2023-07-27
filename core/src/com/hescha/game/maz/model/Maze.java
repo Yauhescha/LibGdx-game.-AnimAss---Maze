@@ -1,6 +1,7 @@
 package com.hescha.game.maz.model;
 
 
+import static com.hescha.game.maz.model.Player.PLAYER_TEXTURE_SIZE;
 import static com.hescha.game.maz.screen.GameScreen.TEXTURE_SIZE;
 import static com.hescha.game.maz.screen.GameScreen.wallTexture;
 
@@ -19,13 +20,13 @@ public class Maze {
         int topLeftJ = x / TEXTURE_SIZE;
 
         int topRightI = y / TEXTURE_SIZE;
-        int topRightJ = (x + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int topRightJ = (x + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
 
-        int bottomLeftI = (y + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int bottomLeftI = (y + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
         int bottomLeftJ = x / TEXTURE_SIZE;
 
-        int bottomRightI = (y + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
-        int bottomRightJ = (x + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int bottomRightI = (y + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int bottomRightJ = (x + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
 
         if (outOfBounds(topLeftI, topLeftJ) || outOfBounds(topRightI, topRightJ) ||
                 outOfBounds(bottomLeftI, bottomLeftJ) || outOfBounds(bottomRightI, bottomRightJ)) {
