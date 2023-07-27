@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class Player {
     public static final float MOVE_INTERVAL = 0.01f;  // Игрок будет двигаться каждые 0.2 секунды
-    public static final int PLAYER_TEXTURE_SIZE = TEXTURE_SIZE/2;
+    public static final int PLAYER_TEXTURE_SIZE = (int) (TEXTURE_SIZE/1.1);
     public static int MOVE_SPEED = TEXTURE_SIZE / 10;
     private int x, y;
     private boolean isDragging = false;
