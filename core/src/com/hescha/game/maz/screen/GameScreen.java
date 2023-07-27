@@ -1,5 +1,9 @@
 package com.hescha.game.maz.screen;
 
+import static com.hescha.game.maz.AnimAssMaz.WORLD_HEIGHT;
+import static com.hescha.game.maz.AnimAssMaz.WORLD_WIDTH;
+import static com.hescha.game.maz.screen.LoadingScreen.UI_WINDOWS_FULL_PNG;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -33,11 +37,12 @@ public class GameScreen extends ScreenAdapter {
 
     float lastTouchX = 0;
     float lastTouchY = 0;
+    private Texture background;
 
     @Override
     public void show() {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
+        float w = WORLD_WIDTH;
+        float h = WORLD_HEIGHT;
 
         TEXTURE_SIZE = (int) (w / (MAZE_SIZE * 2 + 1));
 
@@ -56,6 +61,8 @@ public class GameScreen extends ScreenAdapter {
 
         playerTexture = new Texture(Gdx.files.internal("1.png"));
         wallTexture = new Texture(Gdx.files.internal("2.png"));
+//        background = AnimAssMaz.assetManager.get(UI_WINDOWS_FULL_PNG, Texture.class);
+        background =  new Texture(Gdx.files.internal("back.jpg"));
     }
 
     private static String[][] createMaze() {
@@ -78,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
+        batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_WIDTH);
         maze.draw(batch);
         player.draw(batch);
         batch.end();
