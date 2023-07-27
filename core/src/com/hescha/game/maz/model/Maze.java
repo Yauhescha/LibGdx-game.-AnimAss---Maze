@@ -15,22 +15,42 @@ public class Maze {
     }
 
     public boolean isWall(int x, int y) {
-        int i = y / TEXTURE_SIZE;
-        int j = x / TEXTURE_SIZE;
+        int topLeftI = y / TEXTURE_SIZE;
+        int topLeftJ = x / TEXTURE_SIZE;
 
-        if (i < 0 || i >= mazePath.length || j < 0 || j >= mazePath[0].length) {
+        int topRightI = y / TEXTURE_SIZE;
+        int topRightJ = (x + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+
+        int bottomLeftI = (y + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int bottomLeftJ = x / TEXTURE_SIZE;
+
+        int bottomRightI = (y + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int bottomRightJ = (x + TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+
+        if (outOfBounds(topLeftI, topLeftJ) || outOfBounds(topRightI, topRightJ) ||
+                outOfBounds(bottomLeftI, bottomLeftJ) || outOfBounds(bottomRightI, bottomRightJ)) {
             return true;
         }
 
-        return !mazePath[i][j].equals("#") && !mazePath[i][j].equals(" ");
+        return !isValidSpace(topLeftI, topLeftJ) || !isValidSpace(topRightI, topRightJ) ||
+                !isValidSpace(bottomLeftI, bottomLeftJ) || !isValidSpace(bottomRightI, bottomRightJ);
     }
+
+    private boolean outOfBounds(int i, int j) {
+        return i < 0 || i >= mazePath.length || j < 0 || j >= mazePath[0].length;
+    }
+
+    private boolean isValidSpace(int i, int j) {
+        return mazePath[i][j].equals("#") || mazePath[i][j].equals(" ");
+    }
+
 
     public int getStartX() {
         return 1 * TEXTURE_SIZE;
     }
 
     public int getStartY() {
-        return mazePath.length * TEXTURE_SIZE;
+        return( mazePath.length-1) * TEXTURE_SIZE;
     }
 
     public void draw(SpriteBatch batch) {

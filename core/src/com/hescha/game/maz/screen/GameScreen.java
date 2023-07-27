@@ -18,23 +18,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
-    public static int TEXTURE_SIZE=100;
-    public static int MAZE_SIZE=10;
+    public static int TEXTURE_SIZE = 100;
+    public static int MAZE_SIZE = 20;
+
+    public static Texture playerTexture;
+    public static Texture wallTexture;
 
     private OrthographicCamera camera;
     private Viewport viewport;
     private SpriteBatch batch;
     private Player player;
     private Maze maze;
-    public static Texture playerTexture;
-    public static Texture wallTexture;
+
+    float lastTouchX = 0;
+    float lastTouchY = 0;
 
     @Override
     public void show() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        TEXTURE_SIZE = (int) (w/(MAZE_SIZE*2+1));
+        TEXTURE_SIZE = (int) (w / (MAZE_SIZE * 2 + 1));
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
@@ -58,8 +62,8 @@ public class GameScreen extends ScreenAdapter {
         List<String[]> list = Arrays.asList(generate);
         Collections.reverse(list);
 
-        for(int i=0; i<generate.length; i++){
-            generate[i]=list.get(i);
+        for (int i = 0; i < generate.length; i++) {
+            generate[i] = list.get(i);
         }
         return generate;
     }
@@ -67,10 +71,9 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         handleTouch();
+        player.update(delta, maze);
 
         ScreenUtils.clear(Color.WHITE);
-
-
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
@@ -79,17 +82,32 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
     }
 
+
     private void handleTouch() {
         if (Gdx.input.isTouched()) {
             float touchX = Gdx.input.getX();
-            float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            float touchY = Gdx.graphics.getHeight() - Gdx.input.getY(); // инвертируем ось Y
 
             if (!player.isDragging()) {
                 player.startDragging();
+                lastTouchX = touchX;
+                lastTouchY = touchY;
+            } else {
+                float deltaX = touchX - lastTouchX;
+                float deltaY = touchY - lastTouchY;
+
+                player.drag(deltaX, deltaY, maze);
+
+                lastTouchX = touchX;
+                lastTouchY = touchY;
             }
-            player.drag(touchX, touchY, maze);
         } else if (player.isDragging()) {
             player.stopDragging();
+        }
+
+        if (!Gdx.input.isTouched() && player.isDragging()) {
+            player.stopDragging();
+            player.resetDirection();
         }
     }
 
