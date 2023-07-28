@@ -1,5 +1,6 @@
 package com.hescha.game.maz.screen;
 
+import static com.hescha.game.maz.AnimAssMaz.BACKGROUND_COLOR;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_HEIGHT;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_WIDTH;
 
@@ -68,7 +69,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void draw() {
-        ScreenUtils.clear(Color.WHITE);
+        ScreenUtils.clear(BACKGROUND_COLOR);
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();

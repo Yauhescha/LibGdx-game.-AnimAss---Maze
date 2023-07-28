@@ -54,16 +54,16 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 
-        Texture mainImage = AnimAssMaz.assetManager.get("ui/girl.png", Texture.class);
+//        Texture mainImage = AnimAssMaz.assetManager.get("ui/girl.png", Texture.class);
         Texture buttonTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
-        Texture buttonTextureMain = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
+//        Texture buttonTextureMain = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
         background = AnimAssMaz.assetManager.get(UI_WINDOWS_FULL_PNG, Texture.class);
 
-        Image mainimage = new Image(mainImage);
-        mainimage.setScaling(Scaling.fill);
-        table.add(mainimage).expandX().center().fillX().padBottom(200).row();
+//        Image mainimage = new Image(mainImage);
+//        mainimage.setScaling(Scaling.fill);
+//        table.add(mainimage).expandX().center().fillX().padBottom(200).row();
 
-        TextureRegion btnPlay = new TextureRegion(buttonTextureMain);
+        TextureRegion btnPlay = new TextureRegion(buttonTexture);
         TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(btnPlay);
         ImageTextButton imageTextButton1 = new ImageTextButton("PLAY", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, font));
         table.add(imageTextButton1).center().padTop(10).padBottom(10).row();
@@ -103,7 +103,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(BACKGROUND_COLOR);
         batch.begin();
-        batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+//        batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         batch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
