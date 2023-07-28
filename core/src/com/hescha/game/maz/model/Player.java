@@ -1,7 +1,6 @@
 package com.hescha.game.maz.model;
 
 
-import static com.hescha.game.maz.screen.GameScreen.TEXTURE_SIZE;
 import static com.hescha.game.maz.screen.GameScreen.playerTexture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,9 +9,9 @@ import lombok.Data;
 
 @Data
 public class Player {
-    public static final float MOVE_INTERVAL = 0.01f;  // Игрок будет двигаться каждые 0.2 секунды
-    public static final int PLAYER_TEXTURE_SIZE = (int) (TEXTURE_SIZE/1.1);
-    public static int MOVE_SPEED = TEXTURE_SIZE / 10;
+    public final float MOVE_INTERVAL = 0.01f;  // Игрок будет двигаться каждые 0.2 секунды
+    public int playerTextureSize;
+    public int moveSpeed ;
     private int x, y;
     private boolean isDragging = false;
     private boolean isFinished = false;
@@ -20,9 +19,13 @@ public class Player {
     private Direction currentDirectionY = null;
     private float moveTimer = 0;
 
-    public Player(int x, int y) {
+    public Player(int x, int y, int textureSize, int playerTextureSize) {
         this.x = x;
         this.y = y;
+        this.playerTextureSize=playerTextureSize;
+
+        playerTextureSize = (int) (textureSize /1.2);
+        moveSpeed = textureSize / 6;
     }
 
     public void update(float deltaTime, Maze maze) {
@@ -57,26 +60,19 @@ public class Player {
 
         switch (direction) {
             case UP:
-                dy = MOVE_SPEED;
+                dy = moveSpeed;
                 break;
             case DOWN:
-                dy = -MOVE_SPEED;
+                dy = -moveSpeed;
                 break;
             case LEFT:
-                dx = -MOVE_SPEED;
+                dx = -moveSpeed;
                 break;
             case RIGHT:
-                dx = MOVE_SPEED;
+                dx = moveSpeed;
                 break;
         }
 
-        // Если следующий шаг вызовет столкновение со стеной, скорректировать смещение
-//        if (maze.isWall(x + dx, y)) {
-//            dx = (dx > 0) ? (TEXTURE_SIZE - (x + TEXTURE_SIZE) % TEXTURE_SIZE) : (-x % TEXTURE_SIZE);
-//        }
-//        if (maze.isWall(x, y + dy)) {
-//            dy = (dy > 0) ? (TEXTURE_SIZE - (y + TEXTURE_SIZE) % TEXTURE_SIZE) : (-y % TEXTURE_SIZE);
-//        }
 
         if (!maze.isWall(x + dx, y + dy)) {
             x += dx;
@@ -108,16 +104,16 @@ public class Player {
 
         switch (direction) {
             case UP:
-                dy = MOVE_SPEED;
+                dy = moveSpeed;
                 break;
             case DOWN:
-                dy = -MOVE_SPEED;
+                dy = -moveSpeed;
                 break;
             case LEFT:
-                dx = -MOVE_SPEED;
+                dx = -moveSpeed;
                 break;
             case RIGHT:
-                dx = MOVE_SPEED;
+                dx = moveSpeed;
                 break;
         }
 
@@ -133,7 +129,7 @@ public class Player {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(playerTexture, x, y, PLAYER_TEXTURE_SIZE, PLAYER_TEXTURE_SIZE);
+        batch.draw(playerTexture, x, y, playerTextureSize, playerTextureSize);
     }
 }
 

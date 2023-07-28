@@ -73,7 +73,7 @@ public class MainMenuScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 //                AnimAssMaz.launcher.setScreen(new SelectDifficultyScreen(false));
-                AnimAssMaz.launcher.setScreen(new GameScreen());
+                AnimAssMaz.launcher.setScreen(new GameScreen(5));
             }
         });
 

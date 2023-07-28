@@ -1,32 +1,33 @@
 package com.hescha.game.maz.model;
 
 
-import static com.hescha.game.maz.model.Player.PLAYER_TEXTURE_SIZE;
-import static com.hescha.game.maz.screen.GameScreen.TEXTURE_SIZE;
 import static com.hescha.game.maz.screen.GameScreen.wallTexture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Maze {
-
+    private final int textureSize;
+    private final int playerTextureSize;
     private final String[][] mazePath;
 
-    public Maze(String[][] mazePath) {
+    public Maze(String[][] mazePath, int textureSize, int playerTextureSize) {
         this.mazePath = mazePath;
+        this.textureSize = textureSize;
+        this.playerTextureSize = playerTextureSize;
     }
 
     public boolean isWall(int x, int y) {
-        int topLeftI = y / TEXTURE_SIZE;
-        int topLeftJ = x / TEXTURE_SIZE;
+        int topLeftI = y / textureSize;
+        int topLeftJ = x / textureSize;
 
-        int topRightI = y / TEXTURE_SIZE;
-        int topRightJ = (x + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int topRightI = y / textureSize;
+        int topRightJ = (x + playerTextureSize - 1) / textureSize;
 
-        int bottomLeftI = (y + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
-        int bottomLeftJ = x / TEXTURE_SIZE;
+        int bottomLeftI = (y + playerTextureSize - 1) / textureSize;
+        int bottomLeftJ = x / textureSize;
 
-        int bottomRightI = (y + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
-        int bottomRightJ = (x + PLAYER_TEXTURE_SIZE - 1) / TEXTURE_SIZE;
+        int bottomRightI = (y + playerTextureSize - 1) / textureSize;
+        int bottomRightJ = (x + playerTextureSize - 1) / textureSize;
 
         if (outOfBounds(topLeftI, topLeftJ) || outOfBounds(topRightI, topRightJ) ||
                 outOfBounds(bottomLeftI, bottomLeftJ) || outOfBounds(bottomRightI, bottomRightJ)) {
@@ -47,32 +48,32 @@ public class Maze {
 
 
     public int getStartX() {
-        return 1 * TEXTURE_SIZE;
+        return textureSize;
     }
 
     public int getStartY() {
-        return (mazePath.length - 1) * TEXTURE_SIZE;
+        return (mazePath.length - 1) * textureSize;
     }
 
     public void draw(SpriteBatch batch) {
         for (int i = 0; i < mazePath.length; i++) {
             for (int j = 0; j < mazePath[i].length; j++) {
-                if (isWall(j * TEXTURE_SIZE, i * TEXTURE_SIZE)) {
-                    batch.draw(wallTexture, j * TEXTURE_SIZE, i * TEXTURE_SIZE, TEXTURE_SIZE, TEXTURE_SIZE);
+                if (isWall(j * textureSize, i * textureSize)) {
+                    batch.draw(wallTexture, j * textureSize, i * textureSize, textureSize, textureSize);
                 }
             }
         }
     }
 
     public boolean isExit(int x, int y) {
-        int i = y / TEXTURE_SIZE;
-        int j = x / TEXTURE_SIZE;
+        int i = y / textureSize;
+        int j = x / textureSize;
 
         if (i < 0 || i >= mazePath.length || j < 0 || j >= mazePath[0].length) {
             return false;
         }
 
-        return i == 0 && j == mazePath.length - 2 && y<TEXTURE_SIZE/4;
+        return i == 0 && j == mazePath.length - 2 && y < textureSize / 4;
     }
 
 }
