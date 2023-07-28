@@ -20,6 +20,7 @@ public class Game {
     private int mazeSize;
     private int textureSize;
     private int playerTextureSize;
+    private int moveSpeed;
 
     float lastTouchX = 0;
     float lastTouchY = 0;
@@ -30,10 +31,11 @@ public class Game {
 
         textureSize = (int) (WORLD_WIDTH / (mazeSize * 2 + 1));
         playerTextureSize = (int) (textureSize /1.2);
+        moveSpeed = textureSize / 6;
 
         String[][] generate = createMaze();
         maze = new Maze(generate, textureSize, playerTextureSize);
-        player = new Player(maze.getStartX(), maze.getStartY(), textureSize, playerTextureSize);
+        player = new Player(maze.getStartX(), maze.getStartY(), playerTextureSize, moveSpeed);
     }
 
     public void draw(SpriteBatch batch){

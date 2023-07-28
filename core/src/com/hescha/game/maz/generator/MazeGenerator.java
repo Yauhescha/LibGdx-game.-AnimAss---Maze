@@ -19,10 +19,6 @@ public class MazeGenerator {
 		// Prints out new maze as 2D array
 		String[][] mazeGenerated = generator(maze2D);
 
-		// Prints the string representation of maze
-		System.out.println(convert2D(mazeGenerated));
-		System.out.println("String Representation of Generated " + size + "x" + size + " Maze");
-
 		// Delete the Hash symbol in the maze
 		mazeGenerated = emptyHash(mazeGenerated);
 
@@ -32,11 +28,6 @@ public class MazeGenerator {
 		String[][] mazePath = backtrackingDelete(clone(mazeGenerated));
 		emptyHash(mazePath);
 		hashList(mazePath);
-
-		// Prints the string representation of maze with path
-		System.out.println(printPath(mazePath));
-		System.out.println("Hash Single Path");
-
 		return mazePath;
 	}
 

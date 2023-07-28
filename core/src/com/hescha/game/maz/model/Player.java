@@ -19,13 +19,11 @@ public class Player {
     private Direction currentDirectionY = null;
     private float moveTimer = 0;
 
-    public Player(int x, int y, int textureSize, int playerTextureSize) {
+    public Player(int x, int y, int playerTextureSize, int moveSpeed) {
         this.x = x;
         this.y = y;
         this.playerTextureSize=playerTextureSize;
-
-        playerTextureSize = (int) (textureSize /1.2);
-        moveSpeed = textureSize / 6;
+        this.moveSpeed=moveSpeed;
     }
 
     public void update(float deltaTime, Maze maze) {

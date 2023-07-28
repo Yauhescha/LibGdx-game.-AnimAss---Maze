@@ -14,8 +14,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.maz.AnimAssMaz;
 import com.hescha.game.maz.model.Game;
-import com.hescha.game.maz.model.Maze;
-import com.hescha.game.maz.model.Player;
 
 
 import lombok.Data;
@@ -24,10 +22,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class GameScreen extends ScreenAdapter {
-    public final int mazeSize;
-
     public static Texture playerTexture;
     public static Texture wallTexture;
+
+    public final int mazeSize;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -57,12 +55,19 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        update(delta);
+        draw();
+    }
+
+    private void update(float delta) {
         game.update(delta);
 
         if(game.isFinished()){
             AnimAssMaz.launcher.setScreen(new GameScreen(mazeSize +1));
         }
+    }
 
+    private void draw() {
         ScreenUtils.clear(Color.WHITE);
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
@@ -71,7 +76,6 @@ public class GameScreen extends ScreenAdapter {
         game.draw(batch);
         batch.end();
     }
-
 
 
     @Override

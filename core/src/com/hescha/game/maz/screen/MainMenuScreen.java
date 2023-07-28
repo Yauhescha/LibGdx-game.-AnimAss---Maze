@@ -31,7 +31,6 @@ import com.hescha.game.maz.util.FontUtil;
 
 
 public class MainMenuScreen extends ScreenAdapter {
-    public static MainMenuScreen screen;
     private Stage stage;
     private BitmapFont font;
     private Viewport viewport;
@@ -40,7 +39,6 @@ public class MainMenuScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        screen = this;
         OrthographicCamera camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         camera.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT / 2, 0);
         camera.update();
@@ -74,6 +72,7 @@ public class MainMenuScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
 //                AnimAssMaz.launcher.setScreen(new SelectDifficultyScreen(false));
                 AnimAssMaz.launcher.setScreen(new GameScreen(5));
+                dispose();
             }
         });
 
@@ -113,7 +112,9 @@ public class MainMenuScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         font.dispose();
+        batch.dispose();
         stage.dispose();
+        background.dispose();
     }
 
     @Override
