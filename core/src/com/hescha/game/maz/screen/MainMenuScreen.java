@@ -5,6 +5,7 @@ import static com.hescha.game.maz.AnimAssMaz.BACKGROUND_COLOR;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_HEIGHT;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_WIDTH;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_BUTTONS_BACK_USUAL_ENABLED_PNG;
+import static com.hescha.game.maz.screen.LoadingScreen.UI_BUTTONS_BACK_USUAL_HOVERED_PNG;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_WINDOWS_FULL_PNG;
 
 import com.badlogic.gdx.Gdx;
@@ -54,18 +55,20 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 
-//        Texture mainImage = AnimAssMaz.assetManager.get("ui/girl.png", Texture.class);
-        Texture buttonTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
-//        Texture buttonTextureMain = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
-        background = AnimAssMaz.assetManager.get(UI_WINDOWS_FULL_PNG, Texture.class);
+        Texture buttonEnabledTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
+        Texture buttonHoveredTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_HOVERED_PNG, Texture.class);
+        Texture elementTexture = AnimAssMaz.assetManager.get("ui/element (22).png", Texture.class);
+        background = AnimAssMaz.assetManager.get("ui/girl.png", Texture.class);
 
-//        Image mainimage = new Image(mainImage);
-//        mainimage.setScaling(Scaling.fill);
-//        table.add(mainimage).expandX().center().fillX().padBottom(200).row();
 
-        TextureRegion btnPlay = new TextureRegion(buttonTexture);
-        TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(btnPlay);
-        ImageTextButton imageTextButton1 = new ImageTextButton("PLAY", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, font));
+        TextureRegion title = new TextureRegion(elementTexture);
+        TextureRegionDrawable buttonDrawable = new TextureRegionDrawable(title);
+        TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(buttonEnabledTexture);
+        TextureRegionDrawable buttonDrawable2 = new TextureRegionDrawable(buttonHoveredTexture);
+        ImageTextButton imageTextButton = new ImageTextButton("Maze GAME", new ImageTextButton.ImageTextButtonStyle(buttonDrawable, null, null, font));
+        table.add(imageTextButton).center().padBottom(WORLD_WIDTH/2).row();
+
+        ImageTextButton imageTextButton1 = new ImageTextButton("PLAY", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, buttonDrawable2, null, font));
         table.add(imageTextButton1).center().padTop(10).padBottom(10).row();
         imageTextButton1.addListener(new ClickListener() {
             @Override
@@ -76,9 +79,7 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-        TextureRegion bthGallery = new TextureRegion(buttonTexture);
-        TextureRegionDrawable buttonDrawable2 = new TextureRegionDrawable(bthGallery);
-        ImageTextButton imageTextButton2 = new ImageTextButton("GALLERY", new ImageTextButton.ImageTextButtonStyle(buttonDrawable2, null, null, font));
+        ImageTextButton imageTextButton2 = new ImageTextButton("GALLERY", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, buttonDrawable2, null, font));
         table.add(imageTextButton2).center().padTop(10).padBottom(10).row();
         imageTextButton2.addListener(new ClickListener() {
             @Override
@@ -87,9 +88,7 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-        TextureRegion bthExit = new TextureRegion(buttonTexture);
-        TextureRegionDrawable buttonDrawable3 = new TextureRegionDrawable(bthExit);
-        ImageTextButton imageTextButton3 = new ImageTextButton("EXIT", new ImageTextButton.ImageTextButtonStyle(buttonDrawable3, null, null, font));
+        ImageTextButton imageTextButton3 = new ImageTextButton("EXIT", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, buttonDrawable2, null, font));
         table.add(imageTextButton3).center().padTop(10).padBottom(10).row();
         imageTextButton3.addListener(new ClickListener() {
             @Override
@@ -103,7 +102,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(BACKGROUND_COLOR);
         batch.begin();
-//        batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+        batch.draw(background, 0, WORLD_HEIGHT-WORLD_WIDTH, WORLD_WIDTH, WORLD_WIDTH);
         batch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();

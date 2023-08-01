@@ -53,6 +53,9 @@ public class LoadingScreen extends ScreenAdapter {
 
         assetManager.load(UI_WINDOWS_FULL_PNG, Texture.class);
         assetManager.load(UI_WINDOWS_CARD_PNG, Texture.class);
+
+
+        assetManager.load("ui/element (22).png", Texture.class);
     }
 
     @Override
