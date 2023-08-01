@@ -3,18 +3,24 @@ package com.hescha.game.maz.screen;
 import static com.hescha.game.maz.AnimAssMaz.BACKGROUND_COLOR;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_HEIGHT;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_WIDTH;
+import static com.hescha.game.maz.screen.LoadingScreen.UI_WINDOWS_CARD_PNG;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.maz.AnimAssMaz;
 import com.hescha.game.maz.model.Game;
+import com.hescha.game.maz.util.FontUtil;
 
 
 import lombok.Data;
@@ -23,16 +29,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class GameScreen extends ScreenAdapter {
-    public static Texture playerTexture;
-    public static Texture wallTexture;
-
-    public final int mazeSize;
-
     private OrthographicCamera camera;
     private Viewport viewport;
     private SpriteBatch batch;
-    private Game game;
+    private Stage stage;
+    private BitmapFont font;
+
+    public static Texture playerTexture;
+    public static Texture wallTexture;
     private Texture background;
+    private Texture card;
+
+    public final int mazeSize;
+    private Game game;
 
     @Override
     public void show() {
@@ -44,14 +53,22 @@ public class GameScreen extends ScreenAdapter {
         viewport.apply(true);
 
         batch = new SpriteBatch();
-
-
+        font = FontUtil.generateFont(Color.WHITE);
         playerTexture = new Texture(Gdx.files.internal("1.png"));
         wallTexture = new Texture(Gdx.files.internal("2.png"));
-//        background = AnimAssMaz.assetManager.get(UI_WINDOWS_FULL_PNG, Texture.class);
-        background =  new Texture(Gdx.files.internal("back.jpg"));
+        background = new Texture(Gdx.files.internal("back.jpg"));
+
+        Table table = new Table();
+        table.setFillParent(true);
+        stage = new Stage(viewport);
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+        card = AnimAssMaz.assetManager.get(UI_WINDOWS_CARD_PNG, Texture.class);
+        Image mainimage = new Image(card);
+        table.add(mainimage).top().size(WORLD_WIDTH, WORLD_HEIGHT-WORLD_WIDTH).top().row();
 
         game = new Game(mazeSize);
+
     }
 
     @Override
@@ -63,13 +80,18 @@ public class GameScreen extends ScreenAdapter {
     private void update(float delta) {
         game.update(delta);
 
-        if(game.isFinished()){
-            AnimAssMaz.launcher.setScreen(new GameScreen(mazeSize +1));
+        if (game.isFinished()) {
+            AnimAssMaz.launcher.setScreen(new GameScreen(mazeSize + 1));
         }
     }
 
     private void draw() {
         ScreenUtils.clear(BACKGROUND_COLOR);
+
+
+        stage.draw();
+
+
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
