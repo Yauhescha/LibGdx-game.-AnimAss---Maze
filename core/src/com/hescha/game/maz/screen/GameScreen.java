@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.maz.AnimAssMaz;
 import com.hescha.game.maz.model.Game;
+import com.hescha.game.maz.model.Level;
 import com.hescha.game.maz.util.FontUtil;
 
 
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class GameScreen extends ScreenAdapter {
+    private final Level level;
     private OrthographicCamera camera;
     private Viewport viewport;
     private SpriteBatch batch;
@@ -40,7 +42,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture background;
     private Texture card;
 
-    public final int mazeSize;
+    public int mazeSize;
     private Game game;
 
     @Override
@@ -56,7 +58,6 @@ public class GameScreen extends ScreenAdapter {
         font = FontUtil.generateFont(Color.WHITE);
         playerTexture = new Texture(Gdx.files.internal("1.png"));
         wallTexture = new Texture(Gdx.files.internal("2.png"));
-        background = new Texture(Gdx.files.internal("back.jpg"));
 
         Table table = new Table();
         table.setFillParent(true);
@@ -64,11 +65,10 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
         card = AnimAssMaz.assetManager.get(UI_WINDOWS_CARD_PNG, Texture.class);
-        Image mainimage = new Image(card);
-        table.add(mainimage).top().size(WORLD_WIDTH, WORLD_HEIGHT-WORLD_WIDTH).top().row();
 
-        game = new Game(mazeSize);
-
+        mazeSize = level.getLevelType().getSize();
+        game = level.getGame();
+        background = new Texture(Gdx.files.internal(level.texturePath()));
     }
 
     @Override
@@ -81,21 +81,21 @@ public class GameScreen extends ScreenAdapter {
         game.update(delta);
 
         if (game.isFinished()) {
-            AnimAssMaz.launcher.setScreen(new GameScreen(mazeSize + 1));
+            //SAVE DATA
+            AnimAssMaz.launcher.setScreen(new GalleryScreen(level));
         }
     }
 
     private void draw() {
         ScreenUtils.clear(BACKGROUND_COLOR);
 
-
         stage.draw();
-
 
         batch.setProjectionMatrix(camera.projection);
         batch.setTransformMatrix(camera.view);
         batch.begin();
         batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_WIDTH);
+        batch.draw(card, 0, WORLD_WIDTH, WORLD_WIDTH, WORLD_HEIGHT - WORLD_WIDTH);
         game.draw(batch);
         batch.end();
     }

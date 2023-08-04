@@ -16,10 +16,10 @@ public class LoadingScreen extends ScreenAdapter {
     private static final float WORLD_HEIGHT = 544;
     private static final float PROGRESS_BAR_WIDTH = 100;
     private static final float PROGRESS_BAR_HEIGHT = 25;
-    public static final String UI_BUTTONS_BACK_USUAL_DISABLED_PNG = "ui/buttons/usual/disabled.png";
     public static final String UI_BUTTONS_BACK_USUAL_ENABLED_PNG = "ui/buttons/usual/enabled.png";
     public static final String UI_BUTTONS_BACK_USUAL_HOVERED_PNG = "ui/buttons/usual/hovered.png";
     public static final String UI_BUTTONS_BACK_USUAL_PRESSED_PNG = "ui/buttons/usual/pressed.png";
+    public static final String UI_BUTTONS_BACK_USUAL_DISABLED_PNG = "ui/buttons/usual/disabled.png";
     public static final String UI_WINDOWS_FULL_PNG = "ui/windows/full.png";
     public static final String UI_WINDOWS_CARD_PNG = "ui/windows/card.png";
 
