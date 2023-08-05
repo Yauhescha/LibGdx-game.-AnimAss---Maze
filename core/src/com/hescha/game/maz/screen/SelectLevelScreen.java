@@ -2,6 +2,7 @@ package com.hescha.game.maz.screen;
 
 
 import static com.hescha.game.maz.AnimAssMaz.BACKGROUND_COLOR;
+import static com.hescha.game.maz.AnimAssMaz.PREFERENCE_SAVING_PATH;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_BUTTONS_BACK_USUAL_DISABLED_PNG;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_BUTTONS_BACK_USUAL_ENABLED_PNG;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_BUTTONS_BACK_USUAL_PRESSED_PNG;
@@ -77,14 +78,13 @@ public class SelectLevelScreen extends ScreenAdapter {
         table.setFillParent(true);
         font = FontUtil.generateFont(Color.BLACK);
         innerTable = new Table();
-//        innerTable.setFillParent(true);
 
 
         createButton(headerTexture, levelType.name().replace("_", " ") + "\n" + category, 50, null);
         createButton(buttonTexture, "BACK", 100, addAction(() -> AnimAssMaz.launcher.setScreen(SelectCategoryScreen.screen)));
 
 
-        Preferences prefs = Gdx.app.getPreferences("AnimAss_Puzzle");
+        Preferences prefs = Gdx.app.getPreferences(PREFERENCE_SAVING_PATH);
         for (Level level : levels) {
 
             String levelScoreSavingPath = level.getLevelType().name() + "-" + level.getCategory() + "-" + level.getName();
