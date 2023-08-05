@@ -9,9 +9,9 @@ public class FontUtil {
 
     public static final String FONT_NAME = "font.ttf";
 
-    public static BitmapFont generateFont(Color color) {
+    public static BitmapFont generateFont(Color color, int size) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 50;
+        parameter.size = size;
         parameter.color = color;
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FONT_NAME));
@@ -20,5 +20,9 @@ public class FontUtil {
         generator.dispose();
 
         return font;
+    }
+
+    public static BitmapFont generateFont(Color color) {
+        return generateFont(color, 50);
     }
 }

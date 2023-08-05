@@ -1,19 +1,23 @@
 package com.hescha.game.maz.screen;
 
 import static com.hescha.game.maz.AnimAssMaz.BACKGROUND_COLOR;
+import static com.hescha.game.maz.AnimAssMaz.PREFERENCE_SAVING_PATH;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_HEIGHT;
 import static com.hescha.game.maz.AnimAssMaz.WORLD_WIDTH;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_WINDOWS_CARD_PNG;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -45,6 +49,11 @@ public class GameScreen extends ScreenAdapter {
     public int mazeSize;
     private Game game;
 
+    private String levelScoreSavingPath;
+    private float elapsedTime;
+    private float minTime;
+    private GlyphLayout glyphLayout;
+
     @Override
     public void show() {
         camera = new OrthographicCamera();
@@ -55,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
         viewport.apply(true);
 
         batch = new SpriteBatch();
-        font = FontUtil.generateFont(Color.WHITE);
+        font = FontUtil.generateFont(Color.BLACK);
         playerTexture = new Texture(Gdx.files.internal("1.png"));
         wallTexture = new Texture(Gdx.files.internal("2.png"));
 
@@ -69,6 +78,24 @@ public class GameScreen extends ScreenAdapter {
         mazeSize = level.getLevelType().getSize();
         game = level.getGame();
         background = new Texture(Gdx.files.internal(level.texturePath()));
+
+
+        glyphLayout = new GlyphLayout();
+        int size = 50;
+        do {
+            font.dispose();
+            font = FontUtil.generateFont(Color.BLACK, size);
+            String s = "Difficulty: " + level.getLevelType().name().replace("_", " ") + "\n" +
+                    "Category: " + level.getCategory() + "\n" +
+                    "Seconds: " + (int) elapsedTime + "\n" +
+                    "Seconds min: " + (int) minTime;
+            glyphLayout.setText(font, s);
+            size++;
+        } while (glyphLayout.width < WORLD_WIDTH - 100);
+
+        levelScoreSavingPath = level.getLevelType().name() + "-" + level.getCategory() + "-" + level.getName();
+        Preferences prefs = Gdx.app.getPreferences(PREFERENCE_SAVING_PATH);
+        minTime = prefs.getInteger(levelScoreSavingPath, 9999);
     }
 
     @Override
@@ -81,9 +108,18 @@ public class GameScreen extends ScreenAdapter {
         game.update(delta);
 
         if (game.isFinished()) {
-            //SAVE DATA
+            saveBestResult();
             AnimAssMaz.launcher.setScreen(new GalleryScreen(level));
+        } else {
+            elapsedTime += Gdx.graphics.getDeltaTime();
         }
+
+
+        String s = "Difficulty: " + level.getLevelType().name().replace("_", " ") + "\n" +
+                "Category: " + level.getCategory() + "\n" +
+                "Seconds: " + (int) elapsedTime + "\n" +
+                "Seconds min: " + (int) minTime;
+        glyphLayout.setText(font, s);
     }
 
     private void draw() {
@@ -96,8 +132,19 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_WIDTH);
         batch.draw(card, 0, WORLD_WIDTH, WORLD_WIDTH, WORLD_HEIGHT - WORLD_WIDTH);
+
+        font.draw(batch, glyphLayout, 50, WORLD_HEIGHT-50);
         game.draw(batch);
         batch.end();
+    }
+
+
+    private void saveBestResult() {
+        minTime = elapsedTime;
+        Preferences prefs = Gdx.app.getPreferences(PREFERENCE_SAVING_PATH);
+        prefs.putInteger(levelScoreSavingPath, (int) minTime);
+        prefs.flush();
+        System.out.println("Saved");
     }
 
 

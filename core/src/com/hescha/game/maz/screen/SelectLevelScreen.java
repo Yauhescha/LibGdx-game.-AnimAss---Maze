@@ -68,8 +68,8 @@ public class SelectLevelScreen extends ScreenAdapter {
         viewport.apply(true);
 
         
-        Texture buttonTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
-        Texture buttonGreenTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_PRESSED_PNG, Texture.class);
+        Texture buttonTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_PRESSED_PNG, Texture.class);
+        Texture buttonGreenTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_ENABLED_PNG, Texture.class);
         Texture closedButtonTexture = AnimAssMaz.assetManager.get(UI_BUTTONS_BACK_USUAL_DISABLED_PNG, Texture.class);
         Texture headerTexture = AnimAssMaz.assetManager.get("ui/element (22).png", Texture.class);
 
@@ -87,7 +87,7 @@ public class SelectLevelScreen extends ScreenAdapter {
         Preferences prefs = Gdx.app.getPreferences("AnimAss_Puzzle");
         for (Level level : levels) {
 
-            String levelScoreSavingPath = levelType.name() + "-" + level.getCategory() + "-" + level.getName();
+            String levelScoreSavingPath = level.getLevelType().name() + "-" + level.getCategory() + "-" + level.getName();
             int moves = prefs.getInteger(levelScoreSavingPath, -1);
             boolean isPassed = moves != -1;
 
@@ -108,6 +108,7 @@ public class SelectLevelScreen extends ScreenAdapter {
         stage = new Stage(viewport);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
+
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
         Label emptyLabel1 = new Label("", labelStyle);
