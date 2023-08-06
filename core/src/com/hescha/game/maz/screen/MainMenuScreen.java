@@ -28,17 +28,22 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.maz.AnimAssMaz;
+import com.hescha.game.maz.model.Level;
 import com.hescha.game.maz.util.FontUtil;
+import com.hescha.game.maz.util.LevelUtil;
+
+import java.util.ArrayList;
 
 
 public class MainMenuScreen extends ScreenAdapter {
     public static MainMenuScreen screen;
+    public static ArrayList<Level> levels;
     private Stage stage;
     private BitmapFont font;
     private Viewport viewport;
     private Texture background;
-    private SpriteBatch batch;
 
+    private SpriteBatch batch;
     @Override
     public void show() {
         screen = this;
@@ -97,6 +102,8 @@ public class MainMenuScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         });
+
+        levels = LevelUtil.loadLevels();
     }
 
     @Override

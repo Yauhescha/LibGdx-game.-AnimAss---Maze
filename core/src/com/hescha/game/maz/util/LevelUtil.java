@@ -16,11 +16,21 @@ import java.util.Comparator;
 public class LevelUtil {
 
     public static ArrayList<Level> loadLevels() {
-        return scanLevels();
-//        FileHandle file = Gdx.files.internal("levels/levels.json");
-//        String jsonData = file.readString();
-//        Json json = new Json();
-//        return json.fromJson(ArrayList.class, Level.class, jsonData);
+        FileHandle file = Gdx.files.local("levelss.json");
+        if(file.exists()){
+
+            String jsonData = file.readString();
+            Json json = new Json();
+            return json.fromJson(ArrayList.class, Level.class, jsonData);
+        } else{
+            ArrayList<Level> levels = scanLevels();
+
+            Json json = new Json();
+            String jsonText = json.toJson(levels);
+            file.writeString(jsonText, false);
+            return loadLevels();
+        }
+
     }
 
     public static ArrayList<Level> scanLevels() {

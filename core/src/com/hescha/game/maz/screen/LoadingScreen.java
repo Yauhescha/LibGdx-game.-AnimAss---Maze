@@ -56,6 +56,7 @@ public class LoadingScreen extends ScreenAdapter {
 
 
         assetManager.load("ui/element (22).png", Texture.class);
+
     }
 
     @Override

@@ -94,14 +94,14 @@ public class GameScreen extends ScreenAdapter {
 
 
         glyphLayout = new GlyphLayout();
-        int size = 50;
+        int size = 70;
         do {
             font.dispose();
             font = FontUtil.generateFont(Color.BLACK, size);
-            String s = "Difficulty: \n" + level.getLevelType().name().replace("_", " ") + "\n" +
+            String s = "Difficulty: " + level.getLevelType().name().replace("_", " ") + "\n" +
                     "Category: \n" + level.getCategory() + "\n" +
-                    "Seconds: \n" + (int) elapsedTime + "\n" +
-                    "Seconds min: \n" + (int) minTime;
+                    "Seconds: " + (int) elapsedTime + "\n" +
+                    "Seconds min: " + (int) minTime;
             glyphLayout.setText(font, s);
             size++;
         } while (glyphLayout.width < WORLD_WIDTH - 100);

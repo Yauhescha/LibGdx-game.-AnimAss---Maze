@@ -6,14 +6,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.hescha.game.maz.generator.MazeGenerator;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class Game {
+@NoArgsConstructor
+public class Game implements Serializable {
     private Maze maze;
     private Player player;
 

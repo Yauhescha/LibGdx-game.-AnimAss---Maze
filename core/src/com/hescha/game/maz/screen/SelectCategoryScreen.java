@@ -2,7 +2,6 @@ package com.hescha.game.maz.screen;
 
 import static com.hescha.game.maz.AnimAssMaz.BACKGROUND_COLOR;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_BUTTONS_BACK_USUAL_ENABLED_PNG;
-import static com.hescha.game.maz.util.LevelUtil.loadLevels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -68,7 +67,7 @@ public class SelectCategoryScreen extends ScreenAdapter {
         createButton(headerTexture, levelType.name().replace("_", " "), 50, null);
         createButton(buttonTexture, "BACK", 100, addAction(() -> AnimAssMaz.launcher.setScreen(SelectTypeScreen.screen)));
 
-        List<Level> levels = loadLevels().stream()
+        List<Level> levels = MainMenuScreen.levels.stream()
                 .filter(level -> levelType == level.getLevelType())
                 .collect(Collectors.toList());
         List<String> categories = levels

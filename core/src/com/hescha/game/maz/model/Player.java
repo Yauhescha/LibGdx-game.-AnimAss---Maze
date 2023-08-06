@@ -5,10 +5,14 @@ import static com.hescha.game.maz.screen.GameScreen.playerTexture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.io.Serializable;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class Player {
+@NoArgsConstructor
+public class Player implements Serializable {
     public final float MOVE_INTERVAL = 0.01f;  // Игрок будет двигаться каждые 0.2 секунды
     public int playerTextureSize;
     public int moveSpeed ;
@@ -46,7 +50,7 @@ public class Player {
         currentDirectionX = null;
         currentDirectionY = null;
     }
-    public enum Direction {
+    public enum Direction implements Serializable {
         UP, DOWN, LEFT, RIGHT
 
     }

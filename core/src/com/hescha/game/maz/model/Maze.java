@@ -5,16 +5,22 @@ import static com.hescha.game.maz.screen.GameScreen.wallTexture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Maze {
-    private final int textureSize;
-    private final int playerTextureSize;
-    private final String[][] mazePath;
+import java.io.Serializable;
+
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+public class Maze implements Serializable {
+    private int textureSize;
+    private int playerTextureSize;
+    private String[][] mazePath;
 
     public Maze(String[][] mazePath, int textureSize, int playerTextureSize) {
         this.mazePath = mazePath;
         this.textureSize = textureSize;
         this.playerTextureSize = playerTextureSize;
     }
+
 
     public boolean isWall(int x, int y) {
         int topLeftI = y / textureSize;

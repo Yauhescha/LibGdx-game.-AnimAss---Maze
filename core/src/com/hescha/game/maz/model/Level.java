@@ -1,9 +1,11 @@
 package com.hescha.game.maz.model;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class Level {
+public class Level implements Serializable {
     private String category;
     private String name;
     private LevelType levelType;
