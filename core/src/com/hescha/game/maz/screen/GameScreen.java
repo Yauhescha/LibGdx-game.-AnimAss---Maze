@@ -7,6 +7,9 @@ import static com.hescha.game.maz.AnimAssMaz.WORLD_WIDTH;
 import static com.hescha.game.maz.screen.LoadingScreen.UI_WINDOWS_CARD_PNG;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -72,7 +75,17 @@ public class GameScreen extends ScreenAdapter {
         table.setFillParent(true);
         stage = new Stage(viewport);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+//        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
+
+        InputProcessor inputProcessor = new MyInputProcessor();
+
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(inputProcessor);
+        inputMultiplexer.addProcessor(stage);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
         card = AnimAssMaz.assetManager.get(UI_WINDOWS_CARD_PNG, Texture.class);
 
         mazeSize = level.getLevelType().getSize();
@@ -85,10 +98,10 @@ public class GameScreen extends ScreenAdapter {
         do {
             font.dispose();
             font = FontUtil.generateFont(Color.BLACK, size);
-            String s = "Difficulty: " + level.getLevelType().name().replace("_", " ") + "\n" +
-                    "Category: " + level.getCategory() + "\n" +
-                    "Seconds: " + (int) elapsedTime + "\n" +
-                    "Seconds min: " + (int) minTime;
+            String s = "Difficulty: \n" + level.getLevelType().name().replace("_", " ") + "\n" +
+                    "Category: \n" + level.getCategory() + "\n" +
+                    "Seconds: \n" + (int) elapsedTime + "\n" +
+                    "Seconds min: \n" + (int) minTime;
             glyphLayout.setText(font, s);
             size++;
         } while (glyphLayout.width < WORLD_WIDTH - 100);
@@ -116,10 +129,11 @@ public class GameScreen extends ScreenAdapter {
 
 
         String s = "Difficulty: " + level.getLevelType().name().replace("_", " ") + "\n" +
-                "Category: " + level.getCategory() + "\n" +
+                "Category: \n" + level.getCategory() + "\n" +
                 "Seconds: " + (int) elapsedTime + "\n" +
                 "Seconds min: " + (int) minTime;
         glyphLayout.setText(font, s);
+
     }
 
     private void draw() {
@@ -158,4 +172,53 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         batch.dispose();
     }
+
+}
+
+class MyInputProcessor implements InputProcessor {
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACK) {
+
+            AnimAssMaz.launcher.setScreen(SelectLevelScreen.screen);
+        }
+        return false; // Возвращает false, если клавиша не была обработана
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
+    }
+
+    // Другие методы интерфейса InputProcessor
 }

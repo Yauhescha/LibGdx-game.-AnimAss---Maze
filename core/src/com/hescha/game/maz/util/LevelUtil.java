@@ -10,6 +10,8 @@ import com.hescha.game.maz.model.LevelType;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class LevelUtil {
 
@@ -52,6 +54,12 @@ public class LevelUtil {
                 }
             }
         }
+        Collections.sort(levels, new Comparator<Level>() {
+            @Override
+            public int compare(Level level, Level t1) {
+                return Integer.compare(new Integer(level.getName()), new Integer(t1.getName()));
+            }
+        });
         return levels;
     }
 }

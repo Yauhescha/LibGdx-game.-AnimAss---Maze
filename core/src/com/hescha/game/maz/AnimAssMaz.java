@@ -29,4 +29,6 @@ public class AnimAssMaz extends Game {
 
         setScreen(new LoadingScreen());
     }
+
+
 }
